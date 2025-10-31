@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard - Clean|CUT Barber Shop{% endblock %}
+{% block content %}
+<div class="Desktop">
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-4">Admin Dashboard</h2>
+                
+                <!-- Stats Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card text-white bg-primary">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Customers</h5>
+                                <p class="card-text display-4">{{ total_customers }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-success">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Barbers</h5>
+                                <p class="card-text display-4">{{ total_barbers }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-warning">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Services</h5>
+                                <p class="card-text display-4">{{ total_services }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-info">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Appointments</h5>
+                                <p class="card-text display-4">{{ total_appointments }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chart and Recent Appointments -->
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Appointments This Week</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="appointmentsChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Recent Appointments</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Customer</th>
+                                                <th>Service</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for appointment in recent_appointments %}
+                                            <tr>
+                                                <td>{{ appointment.name }} {{ appointment.surname }}</td>
+                                                <td>{{ appointment.haircut }}</td>
+                                                <td>{{ appointment.created_date|date:"M d" }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Management Links -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Management</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3 mb-3">
+                                        <a href="{% url 'service_list' %}" class="btn btn-primary w-100">
+                                            <i class="fas fa-cut"></i> Manage Services
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <a href="{% url 'barber_list' %}" class="btn btn-success w-100">
+                                            <i class="fas fa-user-tie"></i> Manage Barbers
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <a href="{% url 'barber_schedule' %}" class="btn btn-warning w-100">
+                                            <i class="fas fa-calendar-alt"></i> Barber Schedules
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <a href="{% url 'dashboard' %}" class="btn btn-info w-100">
+                                            <i class="fas fa-users"></i> Customer Management
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Prepare chart data
+    const chartData = {{ chart_data|safe }};
+    const labels = chartData.map(item => item.date);
+    const data = chartData.map(item => item.count);
+    
+    // Create chart
+    const ctx = document.getElementById('appointmentsChart').getContext('2d');
+    const appointmentsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Appointments',
+                data: data,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

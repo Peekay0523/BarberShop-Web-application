@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Add Barber Schedule - Clean|CUT Barber Shop{% endblock %}
+{% block content %}
+<div class="Desktop">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="mb-4">Add Barber Schedule</h2>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="barber" class="form-label">Barber</label>
+                        <select class="form-select" id="barber" name="barber" required>
+                            <option value="">Select a barber</option>
+                            {% for barber in barbers %}
+                            <option value="{{ barber.id }}">{{ barber.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="day_of_week" class="form-label">Day of Week</label>
+                        <select class="form-select" id="day_of_week" name="day_of_week" required>
+                            <option value="">Select a day</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="start_time" class="form-label">Start Time</label>
+                        <input type="time" class="form-control" id="start_time" name="start_time" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="end_time" class="form-label">End Time</label>
+                        <input type="time" class="form-control" id="end_time" name="end_time" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Add Schedule</button>
+                    <a href="{% url 'barber_schedule' %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

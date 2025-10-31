@@ -1,0 +1,327 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block content %}
+<div class="Desktop">
+    <div class="header">
+        <img src="{% static 'images/Header BG-Desktop.jpg' %}" alt="Barber Shop">
+        
+        <div class="my-navbar">
+            <div class="subMenu">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#CutPrices">Prices</a></li>
+                    <button id="open-profile" class="btn btn-primary" style="background-color: transparent; border: none;">
+                        <li>Contact US</li>
+                    </button>
+                    <li><a href="#" onclick="show()">Book Appointment</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login_page' %}">Login</a></li>
+                        <li><a href="{% url 'register_page' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="header-message">
+            <p>Best Barber in Town</p>
+            <p>Professional Care</p>
+        </div>
+        <div class="logo">
+            <img src="{% static 'images/LOgo.png' %}" alt="Logo">
+        </div>
+    </div>
+
+    <div class="profile-popup" id="profile-popup">
+        <span class="close-btn" id="close-profile">&times;</span>
+        <img src="{% static 'images/newPic.jpg' %}" alt="Profile Picture">
+        <div class="social-icons">
+            <a href="https://www.facebook.com"><img src="{% static 'images/facebook.jpg' %}" alt="Facebook"></a>
+            <a href="https://www.twitter.com"><img src="{% static 'images/twitter.png' %}" alt="Twitter"></a>
+            <a href="https://www.instagram.com"><img src="{% static 'images/insta.jpg' %}" alt="Instagram"></a>
+        </div>
+        <div class="contact-info">
+            <p>Email: example@example.com</p>
+            <p>Contact: +1234567890</p>
+        </div>
+    </div>
+
+    <div class="body">
+        <div class="appointment-form hide">
+            <h3 class="af-h1">Book an Appointment</h3>
+            <form id="appointmentForm">
+                {% csrf_token %}
+                <div class="container-fluid">
+                    <div id="namefield" class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Name" name="name" required>
+                        <label for="floatingInput">Name</label>
+                    </div>
+                    <div id="surnamefield" class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput2" placeholder="Surname" name="surname" required>
+                        <label for="floatingInput2">Surname</label>
+                    </div>
+                    <div id="phonefield" class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput3" placeholder="Phone Number" name="PhoneNUmber">
+                        <label for="floatingInput3">Phone Number</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="date" class="form-control" id="floatingInput4" name="bookDate" required>
+                        <label for="floatingInput4">Date And Time</label>
+                    </div>
+                    <div class="haircut-selection">
+                        <input type="hidden" name="price" value="10" id="selectedPrice">
+                        <section id="prices"><p>Select one of The Haircuts Below</p></section>
+                        <select class="form-select" aria-label="Default select example" name="haircut" required>
+                            <option value="">Select a service</option>
+                            {% for service in services %}
+                            <option value="{{ service.name }}" data-price="{{ service.price }}">{{ service.name }} -R{{ service.price }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="radio-options">
+                        <p><label>Select Payment Method</label></p>
+                        <input type="radio" class="btn-check" value="cash" name="paymentType" id="option5" autocomplete="off" checked>
+                        <label class="btn" for="option5">Cash</label>
+                        
+                        <input type="radio" class="btn-check" name="paymentType" value="online" id="option8" autocomplete="off">
+                        <label class="btn" for="option8">Online Payment</label>
+                    </div>
+
+                    <div class="button mb-3">
+                        <button type="submit" class="btn btn-outline-light btn-lg sub">Make an Appointment</button>
+                        <button type="button" class="btn btn-outline-light btn-lg sub" onclick="hide()">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="info-section">
+            <div class="operating-hours">
+                <div class="image1">
+                    <img src="{% static 'images/cut cropped.jpg' %}" alt="Barber 1">
+                </div>
+                <div class="image2">
+                    <img src="{% static 'images/rinald-rolle-_49_L5KmMq4-unsplash.jpg' %}" alt="Barber 2">
+                </div>
+            </div>
+            
+            <div class="aboutUS">
+                <p id="about">About Us</p>
+                <h4>Experienced and Traditional Stylish Barber Shop</h4>
+                <p>Inspires employees and organizations to support causes they care about. We do this to bring more resources to the nonprofits that are changing our world.</p>
+                <button>Learn More</button>
+            </div>
+        </div>
+
+        <div class="hourstxt">
+            <i class="fa fa-clock"></i>
+            <p>Mon-Fri (9H00-17H00)</p>
+            <p>Sat (10H00-16H00)</p>
+        </div>
+
+        <div class="haircuts-prices" id="CutPrices">
+            <div class="haircut-container">
+                <h3>Haircut Services</h3>
+                
+                <!-- Category Tabs -->
+                <ul class="nav nav-tabs" id="serviceCategoryTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">All Services</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="haircut-tab" data-bs-toggle="tab" data-bs-target="#haircut" type="button" role="tab">Haircuts</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="shave-tab" data-bs-toggle="tab" data-bs-target="#shave" type="button" role="tab">Shaves</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="beard-tab" data-bs-toggle="tab" data-bs-target="#beard" type="button" role="tab">Beard Treatments</button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content" id="serviceCategoryContent">
+                    <!-- All Services Tab -->
+                    <div class="tab-pane fade show active" id="all" role="tabpanel">
+                        <div class="cards-container">
+                            {% for service in services %}
+                            <div class="card mb-3">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ service.name }}</h5>
+                                            <p class="card-text">R{{ service.price }}</p>
+                                            <p class="card-text"><small class="text-body-secondary">{{ service.get_category_display }}</small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if forloop.counter|divisibleby:4 and not forloop.last %}
+                        </div>
+                        <div class="cards-container">
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- Haircut Services Tab -->
+                    <div class="tab-pane fade" id="haircut" role="tabpanel">
+                        <div class="cards-container">
+                            {% for service in services %}
+                                {% if service.category == 'haircut' %}
+                                <div class="card mb-3">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ service.name }}</h5>
+                                                <p class="card-text">R{{ service.price }}</p>
+                                                <p class="card-text"><small class="text-body-secondary">{{ service.get_category_display }}</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- Shave Services Tab -->
+                    <div class="tab-pane fade" id="shave" role="tabpanel">
+                        <div class="cards-container">
+                            {% for service in services %}
+                                {% if service.category == 'shave' %}
+                                <div class="card mb-3">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ service.name }}</h5>
+                                                <p class="card-text">R{{ service.price }}</p>
+                                                <p class="card-text"><small class="text-body-secondary">{{ service.get_category_display }}</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- Beard Treatment Services Tab -->
+                    <div class="tab-pane fade" id="beard" role="tabpanel">
+                        <div class="cards-container">
+                            {% for service in services %}
+                                {% if service.category == 'beard' %}
+                                <div class="card mb-3">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ service.name }}</h5>
+                                                <p class="card-text">R{{ service.price }}</p>
+                                                <p class="card-text"><small class="text-body-secondary">{{ service.get_category_display }}</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="team-section">
+            <h5>Team</h5>
+            <h3>Meet our Barbers</h3>
+            <div class="barber-section-cards">
+                {% for barber in barbers %}
+                <div class="card" style="width: 18rem;">
+                    <img src="{% static 'images/backPro.jpg' %}" class="card-img-top" alt="{{ barber.name }}">
+                    <div class="card-body">
+                        <p class="card-text">{{ barber.name }}</p>
+                        <p><span>{{ barber.specialty }} with {{ barber.experience }} years of experience</span></p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="reviews">
+            <h5>Reviews</h5>
+            <h3>Listen to our customers</h3>
+            <div class="reviews-cards">
+                {% for review in reviews %}
+                <div class="row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ review.name }} <span id="username">@{{ review.name }}</span></h6>
+                                <p class="card-text">{{ review.message }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div>
+                <button>
+                    <a href="{% url 'reviews_page' %}">Leave a Review</a>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("open-profile").addEventListener("click", function() {
+        document.getElementById("profile-popup").style.display = "block";
+    });
+
+    document.getElementById("close-profile").addEventListener("click", function() {
+        document.getElementById("profile-popup").style.display = "none";
+    });
+
+    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        
+        fetch('{% url "book_appointment" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Appointment booked successfully!');
+                this.reset();
+                hide();
+            } else {
+                alert('Error booking appointment. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error booking appointment. Please try again.');
+        });
+    });
+</script>
+<script src="{% static 'script.js' %}"></script>
+{% endblock %}

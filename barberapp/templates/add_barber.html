@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Add Barber - Clean|CUT Barber Shop{% endblock %}
+{% block content %}
+<div class="Desktop">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="mb-4">Add New Barber</h2>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Barber Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="specialty" class="form-label">Specialty</label>
+                        <input type="text" class="form-control" id="specialty" name="specialty">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="experience" class="form-label">Experience (years)</label>
+                        <input type="number" class="form-control" id="experience" name="experience" min="0" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Add Barber</button>
+                    <a href="{% url 'barber_list' %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

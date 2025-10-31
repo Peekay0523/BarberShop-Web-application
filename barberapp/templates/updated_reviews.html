@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Customer Reviews</h1>
+            <div class="text-end mb-3">
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>All Reviews</h3>
+                </div>
+                <div class="card-body">
+                    <div class="reviews-container">
+                        {% for review in reviews %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ review.name }}</h5>
+                                <p class="card-text">{{ review.message }}</p>
+                                <small class="text-muted">{{ review.sent_review|date:"F d, Y h:i A" }}</small>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p>No reviews found</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

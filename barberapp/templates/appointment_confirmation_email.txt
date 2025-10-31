@@ -1,0 +1,21 @@
+{% autoescape off %}
+Dear {{ client.name }} {{ client.surname }},
+
+Thank you for booking an appointment at Clean|CUT Barber Shop!
+
+Appointment Details:
+- Service: {{ client.haircut }}
+- Date & Time: {{ client.appointment_date }}
+- Price: R{{ client.amount_paid }}
+
+Please arrive 10 minutes before your scheduled appointment time.
+
+If you need to reschedule or cancel your appointment, please contact us at least 24 hours in advance.
+
+We look forward to seeing you!
+
+Best regards,
+The Clean|CUT Barber Shop Team
+Email: info@barbershop.com
+Phone: +1234567890
+{% endautoescape %}

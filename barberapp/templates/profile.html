@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Clean|CUT Barber Shop{% endblock %}
+
+{% block content %}
+<div class="Desktop">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Customer Profile</h1>
+                <div class="text-end mb-3">
+                    <a href="{% url 'appointment_history' %}" class="btn btn-info">Appointment History</a>
+                    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+                    <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Personal Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Username:</strong> {{ user.username }}</p>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                        <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                        <p><strong>Phone:</strong> {{ customer.phone }}</p>
+                        <a href="#" class="btn btn-primary">Edit Profile</a>
+                    </div>
+                </div>
+                
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3>Booking History</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if bookings %}
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Service</th>
+                                        <th>Barber</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for booking in bookings %}
+                                    <tr>
+                                        <td>{{ booking.appointment_date|date:"Y-m-d H:i" }}</td>
+                                        <td>{{ booking.haircut }}</td>
+                                        <td>Barber Name</td>
+                                        <td>Confirmed</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-primary">View</a>
+                                            <a href="#" class="btn btn-sm btn-warning">Reschedule</a>
+                                            <a href="#" class="btn btn-sm btn-danger">Cancel</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p>No bookings found.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

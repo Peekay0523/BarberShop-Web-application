@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}Barbers - Clean|CUT Barber Shop{% endblock %}
+{% block content %}
+<div class="Desktop">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-4">Our Barbers</h2>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="d-flex justify-content-between mb-3">
+                    <h4>Barber Team</h4>
+                    <a href="{% url 'add_barber' %}" class="btn btn-primary">Add New Barber</a>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Specialty</th>
+                                <th>Experience (years)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for barber in barbers %}
+                            <tr>
+                                <td>{{ barber.name }}</td>
+                                <td>{{ barber.specialty }}</td>
+                                <td>{{ barber.experience }}</td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm delete-barber" data-barber-id="{{ barber.id }}">Delete</button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center">No barbers available</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Delete barber functionality
+    document.querySelectorAll('.delete-barber').forEach(button => {
+        button.addEventListener('click', function() {
+            const barberId = this.getAttribute('data-barber-id');
+            if (confirm('Are you sure you want to delete this barber?')) {
+                fetch('{% url "delete_barber" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: `barber_id=${barberId}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the barber.');
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
