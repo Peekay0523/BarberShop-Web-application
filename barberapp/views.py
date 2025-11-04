@@ -90,18 +90,57 @@ def profile(request):
     except Customer.DoesNotExist:
         customer = None
     
-    # Get customer's bookings
-    bookings = Client.objects.filter(name=request.user.first_name, surname=request.user.last_name)
+    if request.method == 'POST':
+        # Handle profile update
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        phone = request.POST.get('phone')
+        
+        if customer:
+            customer.phone = phone
+            customer.save()
+        
+        request.user.first_name = first_name
+        request.user.last_name = last_name
+        request.user.save()
+        
+        messages.success(request, 'Profile updated successfully!')
+        return redirect('profile')
+    
+    # Get customer's bookings ordered by appointment date (newest first)
+    bookings = Client.objects.filter(
+        name=request.user.first_name, 
+        surname=request.user.last_name
+    ).order_by('-appointment_date')
+    
+    # Get all services
+    services = Service.objects.all()
+    
+    # Get trending services (most popular or highest rated - for now just the first 4)
+    trending_services = Service.objects.all()[:4]
+    
+    # Get reviews made by this user
+    user_reviews = Review.objects.filter(name=f"{request.user.first_name} {request.user.last_name}")
+    
+    # Get all reviews for display
+    all_reviews = Review.objects.all().order_by('-sent_review')[:10]
     
     return render(request, 'profile.html', {
         'customer': customer,
-        'bookings': bookings
+        'bookings': bookings,
+        'services': services,
+        'trending_services': trending_services,
+        'user_reviews': user_reviews,
+        'all_reviews': all_reviews
     })
 
 @login_required
 def appointment_history(request):
     # Get customer's bookings
-    bookings = Client.objects.filter(name=request.user.first_name, surname=request.user.last_name).order_by('-appointment_date')
+    bookings = Client.objects.filter(
+        name=request.user.first_name, 
+        surname=request.user.last_name
+    ).order_by('-appointment_date')
     
     return render(request, 'appointment_history.html', {
         'bookings': bookings,
@@ -266,7 +305,8 @@ def book_appointment(request):
             surname=surname,
             haircut=haircut,
             amount_paid=price,
-            appointment_date=book_date
+            appointment_date=book_date,
+            status='pending'  # New bookings are pending by default
         )
         client.save()
         
@@ -311,6 +351,79 @@ def add_review(request):
         return redirect('updated_reviews')
     
     return redirect('reviews_page')
+
+@login_required
+def book_service(request, service_id=None):
+    from .models import Service  # Import here to avoid circular imports
+    
+    service = None
+    if service_id:
+        try:
+            service = Service.objects.get(id=service_id)
+        except Service.DoesNotExist:
+            pass
+    
+    if request.method == 'POST':
+        name = request.POST['name']
+        surname = request.POST['surname']
+        haircut = request.POST['haircut']
+        price = request.POST['price']
+        book_date = request.POST['bookDate']
+        
+        # Create client
+        client = Client(
+            name=name,
+            surname=surname,
+            haircut=haircut,
+            amount_paid=price,
+            appointment_date=book_date,
+            status='pending'  # New bookings are pending by default
+        )
+        client.save()
+        
+        # If online payment was selected, create bank info
+        if 'paymentType' in request.POST and request.POST['paymentType'] == 'online':
+            bank_info = BankInformation(client=client)
+            bank_info.save()
+        
+        # Send confirmation email
+        try:
+            # In a real app, you would collect the customer's email
+            # For now, we'll use a placeholder
+            customer_email = f'{name.lower()}.{surname.lower()}@example.com'
+            
+            # Render email template
+            from django.template.loader import render_to_string
+            email_content = render_to_string('appointment_confirmation_email.txt', {'client': client})
+            
+            send_mail(
+                'Appointment Confirmation - Clean|CUT Barber Shop',
+                email_content,
+                settings.DEFAULT_FROM_EMAIL,
+                [customer_email],
+                fail_silently=False,
+            )
+        except Exception as e:
+            # Log the error but don't fail the booking
+            print(f"Error sending email: {e}")
+        
+        messages.success(request, 'Appointment booked successfully!')
+        return redirect('profile')
+    
+    return render(request, 'book_service.html', {'service': service})
+
+@login_required
+def add_user_review(request):
+    if request.method == 'POST':
+        message = request.POST['message']
+        user_name = f"{request.user.first_name} {request.user.last_name}"
+        
+        review = Review(name=user_name, message=message)
+        review.save()
+        
+        messages.success(request, 'Thank you for your review!')
+    
+    return redirect('profile')
 
 @login_required
 def service_list(request):

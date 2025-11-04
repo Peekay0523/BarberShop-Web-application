@@ -25,10 +25,14 @@
                                 <td>{{ booking.haircut }}</td>
                                 <td>R{{ booking.amount_paid }}</td>
                                 <td>
-                                    {% if booking.appointment_date > now %}
-                                        <span class="badge bg-warning">Upcoming</span>
+                                    {% if booking.status == 'pending' %}
+                                        <span class="badge bg-warning">Pending</span>
+                                    {% elif booking.status == 'approved' %}
+                                        <span class="badge bg-success">Approved</span>
+                                    {% elif booking.status == 'rejected' %}
+                                        <span class="badge bg-danger">Rejected</span>
                                     {% else %}
-                                        <span class="badge bg-success">Completed</span>
+                                        <span class="badge bg-secondary">Unknown</span>
                                     {% endif %}
                                 </td>
                             </tr>

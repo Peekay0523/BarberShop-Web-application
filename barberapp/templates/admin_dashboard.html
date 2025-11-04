@@ -1,122 +1,318 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}Admin Dashboard - Clean|CUT Barber Shop{% endblock %}
+
 {% block content %}
-<div class="Desktop">
-    <div class="container-fluid mt-4">
-        <div class="row">
-            <div class="col-12">
-                <h2 class="mb-4">Admin Dashboard</h2>
-                
-                <!-- Stats Cards -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <div class="card text-white bg-primary">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Customers</h5>
-                                <p class="card-text display-4">{{ total_customers }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-success">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Barbers</h5>
-                                <p class="card-text display-4">{{ total_barbers }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-warning">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Services</h5>
-                                <p class="card-text display-4">{{ total_services }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-info">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Appointments</h5>
-                                <p class="card-text display-4">{{ total_appointments }}</p>
-                            </div>
-                        </div>
+<style>
+    body {
+        background-color: #111827; /* Dark gray background */
+        color: #f3f4f6;
+        font-family: 'Inter', sans-serif;
+        padding-top: 70px;
+    }
+    
+    .top-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: #1f2937;
+        z-index: 1000;
+        border-bottom: 1px solid #374151;
+        padding: 0.75rem 1rem;
+    }
+    
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #fbbf24;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.25rem;
+    }
+    
+    .nav-logo i {
+        font-size: 1.5rem;
+    }
+    
+    .nav-menu {
+        display: flex;
+        gap: 1.5rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .nav-menu a {
+        color: #f3f4f6;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.375rem;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-menu a:hover,
+    .nav-menu a.active {
+        background-color: #374151;
+        color: #fbbf24;
+    }
+    
+    .nav-user {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .user-info i {
+        color: #fbbf24;
+        font-size: 1.25rem;
+    }
+    
+    .card {
+        background-color: #1f2937; /* Dark card background */
+        border: 1px solid #374151;
+        color: #f3f4f6;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1.5rem;
+    }
+    
+    .card-header {
+        background-color: #374151; /* Darker header */
+        border-bottom: 1px solid #4b5563;
+        color: #fbbf24; /* Amber accent */
+        border-radius: 0.5rem 0.5rem 0 0 !important;
+        padding: 1rem 1.25rem;
+    }
+    
+    .btn {
+        border-radius: 0.375rem;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+    }
+    
+    .btn-primary {
+        background-color: #3b82f6;
+        border: none;
+    }
+    
+    .btn-success {
+        background-color: #10b981;
+        border: none;
+    }
+    
+    .btn-warning {
+        background-color: #f59e0b;
+        color: #111827;
+        border: none;
+    }
+    
+    .btn-info {
+        background-color: #06b6d4;
+        border: none;
+    }
+    
+    .btn-secondary {
+        background-color: #6b7280;
+        border: none;
+    }
+    
+    .table {
+        color: #f3f4f6;
+        margin-bottom: 0;
+    }
+    
+    .table-striped > tbody > tr:nth-of-type(odd) > * {
+        background-color: #374151;
+    }
+    
+    .table thead th {
+        border-bottom: 2px solid #4b5563;
+        color: #fbbf24; /* Amber accent */
+        font-weight: 600;
+    }
+    
+    .badge {
+        padding: 0.25em 0.4em;
+        font-size: 0.75em;
+        font-weight: 700;
+        border-radius: 0.375rem;
+    }
+    
+    .stats-card {
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .stats-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #fbbf24;
+        line-height: 1;
+    }
+    
+    .stats-label {
+        font-size: 0.875rem;
+        color: #9ca3af;
+        margin-top: 0.25rem;
+    }
+    
+    .section-content {
+        padding: 1.5rem;
+    }
+</style>
+
+<div class="top-nav">
+    <div class="nav-container">
+        <a href="{% url 'home' %}" class="nav-logo">
+            <i class="bi bi-scissors"></i>
+            Clean|CUT Barber Shop
+        </a>
+        
+        <ul class="nav-menu">
+            <li><a href="{% url 'admin_dashboard' %}" class="active">Dashboard</a></li>
+            <li><a href="{% url 'service_list' %}">Services</a></li>
+            <li><a href="{% url 'barber_list' %}">Barbers</a></li>
+            <li><a href="{% url 'appointment_calendar' %}">Appointments</a></li>
+            <li><a href="{% url 'barber_schedule' %}">Schedules</a></li>
+        </ul>
+        
+        <div class="nav-user">
+            <div class="user-info">
+                <i class="bi bi-person-badge"></i>
+                <span>Admin</span>
+            </div>
+            <a href="{% url 'home' %}" class="btn btn-secondary btn-sm">Home</a>
+            <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Logout</a>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Admin Dashboard</h2>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card stats-card">
+                <div class="stats-number">{{ total_customers }}</div>
+                <div class="stats-label">Total Customers</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stats-card">
+                <div class="stats-number">{{ total_barbers }}</div>
+                <div class="stats-label">Total Barbers</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stats-card">
+                <div class="stats-number">{{ total_services }}</div>
+                <div class="stats-label">Total Services</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stats-card">
+                <div class="stats-number">{{ total_appointments }}</div>
+                <div class="stats-label">Total Appointments</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Chart and Recent Appointments -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Appointments This Week</h5>
+                </div>
+                <div class="section-content">
+                    <canvas id="appointmentsChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Appointments</h5>
+                </div>
+                <div class="section-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Service</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appointment in recent_appointments %}
+                                <tr>
+                                    <td>{{ appointment.name }} {{ appointment.surname }}</td>
+                                    <td>{{ appointment.haircut }}</td>
+                                    <td>{{ appointment.created_date|date:"M d" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                
-                <!-- Chart and Recent Appointments -->
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Appointments This Week</h5>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="appointmentsChart" width="400" height="200"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Recent Appointments</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Customer</th>
-                                                <th>Service</th>
-                                                <th>Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for appointment in recent_appointments %}
-                                            <tr>
-                                                <td>{{ appointment.name }} {{ appointment.surname }}</td>
-                                                <td>{{ appointment.haircut }}</td>
-                                                <td>{{ appointment.created_date|date:"M d" }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Management Links -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Management</h5>
                 </div>
-                
-                <!-- Management Links -->
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Management</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-3 mb-3">
-                                        <a href="{% url 'service_list' %}" class="btn btn-primary w-100">
-                                            <i class="fas fa-cut"></i> Manage Services
-                                        </a>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <a href="{% url 'barber_list' %}" class="btn btn-success w-100">
-                                            <i class="fas fa-user-tie"></i> Manage Barbers
-                                        </a>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <a href="{% url 'barber_schedule' %}" class="btn btn-warning w-100">
-                                            <i class="fas fa-calendar-alt"></i> Barber Schedules
-                                        </a>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <a href="{% url 'dashboard' %}" class="btn btn-info w-100">
-                                            <i class="fas fa-users"></i> Customer Management
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="section-content">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'service_list' %}" class="btn btn-primary w-100">
+                                <i class="fas fa-cut"></i> Manage Services
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'barber_list' %}" class="btn btn-success w-100">
+                                <i class="fas fa-user-tie"></i> Manage Barbers
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'barber_schedule' %}" class="btn btn-warning w-100">
+                                <i class="fas fa-calendar-alt"></i> Barber Schedules
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'dashboard' %}" class="btn btn-info w-100">
+                                <i class="fas fa-users"></i> Customer Management
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -143,8 +339,8 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 label: 'Appointments',
                 data: data,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(251, 191, 36, 0.2)', // Amber color
+                borderColor: 'rgba(251, 191, 36, 1)', // Amber color
                 borderWidth: 1
             }]
         },
@@ -153,7 +349,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        stepSize: 1
+                        stepSize: 1,
+                        color: '#f3f4f6' // Light text
+                    },
+                    grid: {
+                        color: 'rgba(75, 85, 99, 0.5)' // Dark grid
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#f3f4f6' // Light text
+                    },
+                    grid: {
+                        color: 'rgba(75, 85, 99, 0.5)' // Dark grid
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#f3f4f6' // Light text
                     }
                 }
             }

@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Book Service - Clean|CUT Barber Shop{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #111827;
+        color: #f3f4f6;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    .booking-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+    }
+    
+    .booking-card {
+        background-color: #1f2937;
+        border: 1px solid #374151;
+        color: #f3f4f6;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+    }
+    
+    .service-info {
+        background-color: #374151;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .payment-option {
+        margin-bottom: 1rem;
+    }
+    
+    .btn {
+        border-radius: 0.375rem;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+    }
+    
+    .btn-primary {
+        background-color: #3b82f6;
+        border: none;
+    }
+    
+    .btn-outline-light {
+        background-color: transparent;
+        border-color: #fbbf24;
+        color: #fbbf24;
+    }
+    
+    .btn-outline-light:hover {
+        background-color: #fbbf24;
+        color: #111827;
+    }
+    
+    .form-control {
+        background-color: #374151;
+        border: 1px solid #4b5563;
+        color: #f3f4f6;
+    }
+    
+    .form-control:focus {
+        background-color: #374151;
+        border-color: #fbbf24;
+        color: #f3f4f6;
+        box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.25);
+    }
+</style>
+
+<div class="booking-container">
+    <div class="booking-card">
+        <h2 class="mb-4 text-center" style="color: #fbbf24;">Book Your Service</h2>
+        
+        <form method="post" action="{% url 'book_appointment' %}">
+            {% csrf_token %}
+            <div class="service-info">
+                <h4 style="color: #fbbf24;">Selected Service</h4>
+                <p><strong id="selected-service-name">{{ service.name|default:"Service Name" }}</strong></p>
+                <p><strong>Price:</strong> R<span id="selected-service-price">{{ service.price|default:"0.00" }}</span></p>
+                <p><strong>Duration:</strong> {{ service.duration|default:"0" }} minutes</p>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="first_name" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="first_name" name="name" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="last_name" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="last_name" name="surname" required>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="appointment_date" class="form-label">Appointment Date & Time</label>
+                <input type="datetime-local" class="form-control" id="appointment_date" name="bookDate" required>
+            </div>
+            
+            <div class="mb-4">
+                <h5 style="color: #fbbf24;">Payment Method</h5>
+                <div class="payment-option">
+                    <input type="radio" class="btn-check" value="cash" name="paymentType" id="cash-payment" autocomplete="off" checked>
+                    <label class="btn btn-outline-light w-100" for="cash-payment">Cash Payment</label>
+                </div>
+                <div class="payment-option">
+                    <input type="radio" class="btn-check" name="paymentType" value="online" id="online-payment" autocomplete="off">
+                    <label class="btn btn-outline-light w-100" for="online-payment">Online Payment</label>
+                </div>
+            </div>
+            
+            <input type="hidden" name="haircut" value="{{ service.name|default:"" }}">
+            <input type="hidden" name="price" value="{{ service.price|default:"0" }}">
+            
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg">Confirm Booking</button>
+                <a href="{% url 'profile' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Set minimum date to today
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        const time = new Date().toTimeString().substring(0, 5);
+        document.getElementById('appointment_date').min = today;
+        
+        // Update hidden price field when service is selected
+        const servicePrice = "{{ service.price|default:"0" }}";
+        document.getElementById('selected-service-price').textContent = servicePrice;
+    });
+</script>
+{% endblock %}

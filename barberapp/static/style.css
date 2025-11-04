@@ -271,6 +271,116 @@
     .contact-info {
         text-align: center;
     }
+    
+    /* Styling for visit, info section, and footer */
+    .visit {
+        text-align: center;
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .visit h1 {
+        margin: 0 0 10px 0;
+        color: #333;
+    }
+    
+    .visit p {
+        color: #555;
+        margin: 0;
+    }
+    
+    .info {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .loc-card, .phone-card {
+        background-color: #e0e0e0 !important; /* Light grey background */
+        border-radius: 10px;
+        padding: 15px;
+        min-width: 200px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .loc-card p, .phone-card p {
+        margin: 5px 0;
+        color: #333;
+    }
+    
+    .loc-card p:first-child, .phone-card p:first-child {
+        font-weight: bold;
+        color: #1a1a1a;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+    }
+    .below {
+        width: 100%;
+        margin-top: 20px;
+    }
+    
+    .visit {
+        text-align: center;
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .visit h1 {
+        margin: 0 0 10px 0;
+        color: #333;
+    }
+    
+    .visit p {
+        color: #555;
+        margin: 0;
+    }
+    
+    .info {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .loc-card, .phone-card {
+        background-color: #e0e0e0 !important; /* Light grey background */
+        border-radius: 10px;
+        padding: 15px;
+        min-width: 200px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .loc-card p, .phone-card p {
+        margin: 5px 0;
+        color: #333;
+    }
+    
+    .loc-card p:first-child, .phone-card p:first-child {
+        font-weight: bold;
+        color: #1a1a1a;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+    }
+    .below{
+         background-color: #e0e0e0 !important;
+    }
+    footer {
+        background-color: #e0e0e0 !important; /* Grey background */
+        text-align: center;
+        padding: 20px;
+        margin-top: 30px;
+        width: 100%;
+    }
+    
+    footer p {
+        margin: 5px 0;
+        color: #333 !important;
+    }
 }
 
 @media screen and (min-width:550px) and (max-width:990px) {
@@ -462,6 +572,72 @@
     
     .contact-info {
         text-align: center;
+    }
+    
+    /* Styling for visit, info section, and footer */
+    .below {
+        width: 100%;
+        margin-top: 20px;
+    }
+    
+    .visit {
+        text-align: center;
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .visit h1 {
+        margin: 0 0 10px 0;
+        color: #333;
+    }
+    
+    .visit p {
+        color: #555;
+        margin: 0;
+    }
+    
+    .info {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .loc-card, .phone-card {
+        background-color: #e0e0e0 !important; /* Light grey background */
+        border-radius: 10px;
+        padding: 15px;
+        min-width: 200px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .loc-card p, .phone-card p {
+        margin: 5px 0;
+        color: #333;
+    }
+    
+    .loc-card p:first-child, .phone-card p:first-child {
+        font-weight: bold;
+        color: #1a1a1a;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+    }
+    .below{
+         background-color: #e0e0e0 !important;
+    }
+    footer {
+        background-color: #e0e0e0 !important; /* Grey background */
+        text-align: center;
+        padding: 20px;
+        margin-top: 30px;
+        width: 100%;
+    }
+    
+    footer p {
+        margin: 5px 0;
+        color: #333 !important;
     }
 }
 
@@ -904,5 +1080,102 @@
     
     .contact-info {
         text-align: center;
+    }
+    
+    /* Styling for visit, info section, and footer */
+    .below {
+        width: 100%;
+        margin-top: 20px;
+    }
+    
+    .visit {
+        text-align: center;
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .visit h1 {
+        margin: 0 0 10px 0;
+        color: #333;
+    }
+    
+    .visit p {
+        color: #555;
+        margin: 0;
+    }
+    
+    .info {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .loc-card, .phone-card {
+        background-color: #e0e0e0 !important; /* Light grey background */
+        border-radius: 10px;
+        padding: 15px;
+        min-width: 200px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .loc-card p, .phone-card p {
+        margin: 5px 0;
+        color: #333;
+    }
+    
+    .loc-card p:first-child, .phone-card p:first-child {
+        font-weight: bold;
+        color: #1a1a1a;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+    }
+    .below{
+        background-color: #e4e2e2 !important;
+    }
+    footer {
+        background-color: #8a8888 !important; /* Grey background */
+        text-align: center;
+        padding: 20px;
+        margin-top: 30px;
+        width: 100%;
+    }
+    
+    footer p {
+        margin: 5px 0;
+        color: #333 !important;
+    }
+    
+    /* Centering styles for login page */
+    .login-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh; /* Adjust based on your needs */
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .login-page .card {
+        width: 100%;
+        margin: 0 auto; /* Center the card */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border: none;
+    }
+
+    .login-page .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .login-page .row {
+        width: 100%;
+        max-width: 600px; /* Reduced width to about 50% of the original */
     }
 }

@@ -1,17 +1,295 @@
 {% extends 'base.html' %}
 {% load static %} 
+
 {% block content %}
+<style>
+    body {
+        background-color: #111827; /* Dark gray background similar to example */
+        color: #f3f4f6;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    .header {
+        position: relative;
+        width: 100%;
+        height: 60vh;
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('{% static "images/Header BG-Mobile.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        margin-bottom: 2rem;
+    }
+    
+    .header-message {
+        z-index: 10;
+    }
+    
+    .header-message p {
+        color: #f3f4f6;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .header-message p:first-child {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #fbbf24; /* Amber accent */
+    }
+    
+    .logo {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 20;
+    }
+    
+    .logo img {
+        height: 60px;
+        filter: brightness(0) invert(1); /* Make logo white */
+    }
+    
+    .my-navbar {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 20;
+    }
+    
+    .subMenu ul {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 1.5rem;
+        background-color: transparent;
+    }
+    
+    .subMenu ul li,
+    .subMenu ul button {
+        display: inline-block;
+    }
+    
+    .subMenu ul li a,
+    .subMenu ul button {
+        color: #f3f4f6;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        transition: all 0.3s ease;
+        background-color: transparent;
+        border: none;
+        font-size: 1rem;
+    }
+    
+    .subMenu ul li a:hover,
+    .subMenu ul button:hover {
+        background-color: #4b5563;
+        color: #fbbf24; /* Amber accent */
+    }
+    
+    .section-title {
+        color: #fbbf24; /* Amber accent */
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: bold;
+        font-size: 2rem;
+    }
+    
+    .aboutUS {
+        background-color: #1f2937;
+        color: #f3f4f6;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        margin: 2rem auto;
+        max-width: 1200px;
+    }
+    
+    .aboutUS h4 {
+        color: #fbbf24; /* Amber accent */
+    }
+    
+    .aboutUS button {
+        background-color: #fbbf24; /* Amber accent */
+        color: #111827;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.375rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .aboutUS button:hover {
+        background-color: #f59e0b; /* Darker amber */
+    }
+    
+    .hourstxt {
+        background-color: #374151;
+        color: #f3f4f6;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        text-align: center;
+        margin: 2rem auto;
+        max-width: 400px;
+    }
+    
+    .visit {
+        background-color: #1f2937;
+        color: #f3f4f6;
+        padding: 2rem;
+        text-align: center;
+        margin: 2rem 0;
+    }
+    
+    .visit h1 {
+        color: #fbbf24; /* Amber accent */
+    }
+    
+    .info {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        padding: 2rem;
+        flex-wrap: wrap;
+    }
+    
+    .loc-card, .phone-card {
+        background-color: #374151;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        min-width: 250px;
+        text-align: center;
+        color: #f3f4f6;
+    }
+    
+    .loc-card p:first-child, .phone-card p:first-child {
+        color: #fbbf24; /* Amber accent */
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    
+    footer {
+        background-color: #111827;
+        color: #9ca3af;
+        text-align: center;
+        padding: 1.5rem;
+        border-top: 1px solid #374151;
+    }
+    
+    .btn {
+        background-color: #fbbf24; /* Amber accent */
+        color: #111827;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .btn:hover {
+        background-color: #f59e0b; /* Darker amber */
+    }
+    
+    .card {
+        background-color: #1f2937;
+        border: 1px solid #374151;
+        color: #f3f4f6;
+    }
+    
+    .card-title {
+        color: #fbbf24 !important; /* Amber accent */
+    }
+    
+    .nav-link {
+        color: #9ca3af !important;
+        border: 1px solid #374151 !important;
+        border-bottom: none !important;
+        border-radius: 0.5rem 0.5rem 0 0 !important;
+        margin: 0 0.25rem !important;
+    }
+    
+    .nav-link.active {
+        background-color: #374151 !important;
+        color: #fbbf24 !important;
+        border: 1px solid #374151 !important;
+        border-bottom: none !important;
+    }
+    
+    .profile-popup {
+        background-color: #1f2937;
+        border: 1px solid #374151;
+        color: #f3f4f6;
+    }
+    
+    .close-btn {
+        color: #fbbf24;
+        font-size: 1.5rem;
+    }
+    
+    .btn-check:checked + .btn,
+    .btn-check:active + .btn {
+        background-color: #fbbf24 !important; /* Amber accent */
+        color: #111827 !important;
+        border-color: #fbbf24 !important;
+    }
+    
+    .form-control {
+        background-color: #374151;
+        border: 1px solid #4b5563;
+        color: #f3f4f6;
+    }
+    
+    .form-control:focus {
+        background-color: #374151;
+        border-color: #fbbf24;
+        color: #f3f4f6;
+        box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.25);
+    }
+    
+    .form-select {
+        background-color: #374151;
+        border: 1px solid #4b5563;
+        color: #f3f4f6;
+    }
+    
+    .form-select:focus {
+        background-color: #374151;
+        border-color: #fbbf24;
+        color: #f3f4f6;
+        box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.25);
+    }
+    
+    .btn-outline-light {
+        background-color: transparent;
+        border-color: #fbbf24;
+        color: #fbbf24;
+    }
+    
+    .btn-outline-light:hover {
+        background-color: #fbbf24;
+        color: #111827;
+    }
+</style>
+
 <div class="Desktop">
     <div class="header">
-        <img src="{% static 'images/Header BG-Desktop.jpg' %}" alt="Barber Shop">
+        <div class="logo">
+            <img src="{% static 'images/LOgo.png' %}" alt="Logo">
+        </div>
         
         <div class="my-navbar">
             <div class="subMenu">
                 <ul>
                     <li><a href="#">Home</a></li>
                     <li><a href="#CutPrices">Prices</a></li>
-                    <button id="open-profile" class="btn btn-primary" style="background-color: transparent; border: none;">
-                        <li>Contact US</li>
+                    <button id="open-profile" class="btn" style="background-color: transparent; border: none;">
+                        Contact US
                     </button>
                     <li><a href="#" onclick="show()">Book Appointment</a></li>
                     {% if user.is_authenticated %}
@@ -28,9 +306,6 @@
         <div class="header-message">
             <p>Best Barber in Town</p>
             <p>Professional Care</p>
-        </div>
-        <div class="logo">
-            <img src="{% static 'images/LOgo.png' %}" alt="Logo">
         </div>
     </div>
 
@@ -100,30 +375,26 @@
         <div class="info-section">
             <div class="operating-hours">
                 <div class="image1">
-                    <img src="{% static 'images/cut cropped.jpg' %}" alt="Barber 1">
+                    <img src="{% static 'images/cut cropped.jpg' %}" alt="Barber 1" style="width: 100%; height: auto; filter: brightness(0.7);">
                 </div>
-                <div class="image2">
-                    <img src="{% static 'images/rinald-rolle-_49_L5KmMq4-unsplash.jpg' %}" alt="Barber 2">
+                <div class="image1">
+                    <img src="{% static 'images/rinald-rolle-_49_L5KmMq4-unsplash.jpg' %}" alt="Barber 2" style="width: 100%; height: auto; filter: brightness(0.7);">
                 </div>
             </div>
             
             <div class="aboutUS">
-                <p id="about">About Us</p>
+                <p id="about" class="section-title">About Us</p>
                 <h4>Experienced and Traditional Stylish Barber Shop</h4>
                 <p>Inspires employees and organizations to support causes they care about. We do this to bring more resources to the nonprofits that are changing our world.</p>
                 <button>Learn More</button>
             </div>
         </div>
 
-        <div class="hourstxt">
-            <i class="fa fa-clock"></i>
-            <p>Mon-Fri (9H00-17H00)</p>
-            <p>Sat (10H00-16H00)</p>
-        </div>
-
+        
+        <br><br><br><br>
         <div class="haircuts-prices" id="CutPrices">
             <div class="haircut-container">
-                <h3>Haircut Services</h3>
+                <h3 class="section-title">Haircut Services</h3>
                 
                 <!-- Category Tabs -->
                 <ul class="nav nav-tabs" id="serviceCategoryTabs" role="tablist">
@@ -149,7 +420,7 @@
                             <div class="card mb-3">
                                 <div class="row g-0">
                                     <div class="col-md-4">
-                                        <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}">
+                                        <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
@@ -176,7 +447,7 @@
                                 <div class="card mb-3">
                                     <div class="row g-0">
                                         <div class="col-md-4">
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}">
+                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body">
@@ -200,7 +471,7 @@
                                 <div class="card mb-3">
                                     <div class="row g-0">
                                         <div class="col-md-4">
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}">
+                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body">
@@ -224,7 +495,7 @@
                                 <div class="card mb-3">
                                     <div class="row g-0">
                                         <div class="col-md-4">
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}">
+                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body">
@@ -244,15 +515,15 @@
         </div>
 
         <div class="team-section">
-            <h5>Team</h5>
+            <h5 class="section-title">Team</h5>
             <h3>Meet our Barbers</h3>
             <div class="barber-section-cards">
                 {% for barber in barbers %}
-                <div class="card" style="width: 18rem;">
-                    <img src="{% static 'images/backPro.jpg' %}" class="card-img-top" alt="{{ barber.name }}">
+                <div class="card" style="width: 18rem; background-color: #1f2937; border: 1px solid #374151;">
+                    <img src="{% static 'images/backPro.jpg' %}" class="card-img-top" alt="{{ barber.name }}" style="filter: brightness(0.7);">
                     <div class="card-body">
-                        <p class="card-text">{{ barber.name }}</p>
-                        <p><span>{{ barber.specialty }} with {{ barber.experience }} years of experience</span></p>
+                        <p class="card-text" style="color: #f3f4f6;">{{ barber.name }}</p>
+                        <p style="color: #9ca3af;"><span>{{ barber.specialty }} with {{ barber.experience }} years of experience</span></p>
                     </div>
                 </div>
                 {% endfor %}
@@ -260,16 +531,16 @@
         </div>
 
         <div class="reviews">
-            <h5>Reviews</h5>
+            <h5 class="section-title">Reviews</h5>
             <h3>Listen to our customers</h3>
             <div class="reviews-cards">
                 {% for review in reviews %}
                 <div class="row">
                     <div class="col-sm-6 mb-3 mb-sm-0">
-                        <div class="card">
+                        <div class="card" style="background-color: #1f2937; border: 1px solid #374151;">
                             <div class="card-body">
-                                <h6 class="card-title">{{ review.name }} <span id="username">@{{ review.name }}</span></h6>
-                                <p class="card-text">{{ review.message }}</p>
+                                <h6 class="card-title" style="color: #f3f4f6;">{{ review.name }} <span id="username" style="color: #9ca3af;">@{{ review.name }}</span></h6>
+                                <p class="card-text" style="color: #d1d5db;">{{ review.message }}</p>
                             </div>
                         </div>
                     </div>
@@ -278,14 +549,43 @@
             </div>
 
             <div>
-                <button>
-                    <a href="{% url 'reviews_page' %}">Leave a Review</a>
+                <button class="btn">
+                    <a href="{% url 'reviews_page' %}" style="color: #111827; text-decoration: none;">Leave a Review</a>
                 </button>
             </div>
         </div>
     </div>
 </div>
+<div class="below">
+<div class="visit">
+    <h1>Visit Us today</h1>
+    <p>Walk ins allowed or book appointment for guaranteed service</p>
+</div>
 
+<div class="info">
+    <div class="loc-card">
+        <i class="fa fa-location"></i>
+        <p>Location</p>
+        <p>Gauteng, Pretoria</p>
+        <p>Mabopane Block P 964</p>
+    </div>
+    <div class="phone-card">
+        <i class="fa fa-phone"></i>
+        <p>Phone</p>
+        <p>+27 76 342 6754</p>
+        <p>Barber@gmail.com</p>
+    </div>
+    <div class="phone-card">
+            <i class="fa fa-clock"></i>
+            <p>Mon-Fri (9H00-17H00)</p>
+            <p>Sat (10H00-16H00)</p>
+</div>
+</div>
+<footer>
+    <p>Premium Barbershop</p>
+    <p>2025 Premium barbershop. all rights reserved</p>
+</footer>
+</div>
 <script>
     document.getElementById("open-profile").addEventListener("click", function() {
         document.getElementById("profile-popup").style.display = "block";
@@ -322,6 +622,15 @@
             alert('Error booking appointment. Please try again.');
         });
     });
+    
+    // Function to show/hide appointment form
+    function show() {
+        document.querySelector('.appointment-form').classList.remove('hide');
+    }
+    
+    function hide() {
+        document.querySelector('.appointment-form').classList.add('hide');
+    }
 </script>
 <script src="{% static 'script.js' %}"></script>
 {% endblock %}
