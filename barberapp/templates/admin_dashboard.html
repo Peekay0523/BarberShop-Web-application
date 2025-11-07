@@ -187,19 +187,13 @@
         </a>
         
         <ul class="nav-menu">
-            <li><a href="{% url 'admin_dashboard' %}" class="active">Dashboard</a></li>
-            <li><a href="{% url 'service_list' %}">Services</a></li>
-            <li><a href="{% url 'barber_list' %}">Barbers</a></li>
-            <li><a href="{% url 'appointment_calendar' %}">Appointments</a></li>
-            <li><a href="{% url 'barber_schedule' %}">Schedules</a></li>
+            <li><a href="{% url 'admin_dashboard' %}" class="active">Admin Dashboard</a></li>
+            <li><a href="{% url 'dashboard' %}">Client Management</a></li>
+            <li><a href="{% url 'barber_list' %}">Barber Management</a></li>
+            <li><a href="{% url 'service_list' %}">Service Management</a></li>
         </ul>
         
         <div class="nav-user">
-            <div class="user-info">
-                <i class="bi bi-person-badge"></i>
-                <span>Admin</span>
-            </div>
-            <a href="{% url 'home' %}" class="btn btn-secondary btn-sm">Home</a>
             <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Logout</a>
         </div>
     </div>
@@ -217,28 +211,36 @@
     <!-- Stats Cards -->
     <div class="row mb-4">
         <div class="col-md-3">
-            <div class="card stats-card">
-                <div class="stats-number">{{ total_customers }}</div>
-                <div class="stats-label">Total Customers</div>
-            </div>
+            <a href="{% url 'user_list' %}" style="text-decoration: none; color: inherit;">
+                <div class="card stats-card">
+                    <div class="stats-number">{{ total_customers }}</div>
+                    <div class="stats-label">Total Customers</div>
+                </div>
+            </a>
         </div>
         <div class="col-md-3">
-            <div class="card stats-card">
-                <div class="stats-number">{{ total_barbers }}</div>
-                <div class="stats-label">Total Barbers</div>
-            </div>
+            <a href="{% url 'barber_list' %}" style="text-decoration: none; color: inherit;">
+                <div class="card stats-card">
+                    <div class="stats-number">{{ total_barbers }}</div>
+                    <div class="stats-label">Total Barbers</div>
+                </div>
+            </a>
         </div>
         <div class="col-md-3">
-            <div class="card stats-card">
-                <div class="stats-number">{{ total_services }}</div>
-                <div class="stats-label">Total Services</div>
-            </div>
+            <a href="{% url 'service_list' %}" style="text-decoration: none; color: inherit;">
+                <div class="card stats-card">
+                    <div class="stats-number">{{ total_services }}</div>
+                    <div class="stats-label">Total Services</div>
+                </div>
+            </a>
         </div>
         <div class="col-md-3">
-            <div class="card stats-card">
-                <div class="stats-number">{{ total_appointments }}</div>
-                <div class="stats-label">Total Appointments</div>
-            </div>
+            <a href="{% url 'dashboard' %}" style="text-decoration: none; color: inherit;">
+                <div class="card stats-card">
+                    <div class="stats-number">{{ total_appointments }}</div>
+                    <div class="stats-label">Total Appointments</div>
+                </div>
+            </a>
         </div>
     </div>
     
@@ -285,40 +287,7 @@
         </div>
     </div>
     
-    <!-- Management Links -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Management</h5>
-                </div>
-                <div class="section-content">
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <a href="{% url 'service_list' %}" class="btn btn-primary w-100">
-                                <i class="fas fa-cut"></i> Manage Services
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="{% url 'barber_list' %}" class="btn btn-success w-100">
-                                <i class="fas fa-user-tie"></i> Manage Barbers
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="{% url 'barber_schedule' %}" class="btn btn-warning w-100">
-                                <i class="fas fa-calendar-alt"></i> Barber Schedules
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="{% url 'dashboard' %}" class="btn btn-info w-100">
-                                <i class="fas fa-users"></i> Customer Management
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+ 
 </div>
 
 <!-- Chart.js -->

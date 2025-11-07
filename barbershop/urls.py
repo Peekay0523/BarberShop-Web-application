@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from barberapp import views
 
 urlpatterns = [
@@ -31,6 +33,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('updated-reviews/', views.updated_reviews, name='updated_reviews'),
     path('error-login/', views.error_login, name='error_login'),
+    path('user-list/', views.user_list, name='user_list'),
     path('admin-login-submit/', views.admin_login, name='admin_login'),
     path('admin-logout/', views.admin_logout, name='admin_logout'),
     path('book-appointment/', views.book_appointment, name='book_appointment'),
@@ -41,9 +44,11 @@ urlpatterns = [
     path('delete-client/', views.delete_client, name='delete_client'),
     path('services/', views.service_list, name='service_list'),
     path('add-service/', views.add_service, name='add_service'),
+    path('edit-service/<int:service_id>/', views.edit_service, name='edit_service'),
     path('delete-service/', views.delete_service, name='delete_service'),
     path('barbers/', views.barber_list, name='barber_list'),
     path('add-barber/', views.add_barber, name='add_barber'),
+    path('edit-barber/<int:barber_id>/', views.edit_barber, name='edit_barber'),
     path('delete-barber/', views.delete_barber, name='delete_barber'),
     path('appointment-calendar/', views.appointment_calendar, name='appointment_calendar'),
     path('appointment-history/', views.appointment_history, name='appointment_history'),
@@ -52,3 +57,6 @@ urlpatterns = [
     path('delete-barber-schedule/', views.delete_barber_schedule, name='delete_barber_schedule'),
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

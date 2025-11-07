@@ -382,22 +382,18 @@
                                 {% for service in services %}
                                 <div class="col-md-6 col-lg-4 mb-4">
                                     <div class="card h-100 service-card">
-                                        {% comment %}
-                                            Map service to appropriate image based on service name
-                                            Using predefined images since Django doesn't have a built-in contains filter
-                                        {% endcomment %}
-                                        {% if service.name|lower == "classic haircut" %}
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 200px; object-fit: contain; background-color: #374151;">
-                                        {% elif service.name|lower == "beard trim" %}
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 200px; object-fit: contain; background-color: #374151;">
-                                        {% elif service.name|lower == "haircut & beard" %}
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 200px; object-fit: contain; background-color: #374151;">
-                                        {% elif service.name|lower == "hot towel shave" %}
-                                            <img src="{% static 'images/haircuts/skinfade.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 200px; object-fit: contain; background-color: #374151;">
-                                        {% elif service.name|lower == "haircut & hot towel" %}
-                                            <img src="{% static 'images/haircuts/high flat top.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 200px; object-fit: contain; background-color: #374151;">
+                                        {% if service.image %}
+                                            <img src="{{ service.image.url }}" class="card-img-top" alt="{{ service.name }}" style="height: 200px; object-fit: contain; background-color: #374151;">
                                         {% else %}
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 200px; object-fit: contain; background-color: #374151;">
+                                            {% if service.category == 'haircut' %}
+                                                <img src="{% static 'images/haircuts/high flat top.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 200px; object-fit: contain; background-color: #374151;">
+                                            {% elif service.category == 'shave' %}
+                                                <img src="{% static 'images/haircuts/brush.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 200px; object-fit: contain; background-color: #374151;">
+                                            {% elif service.category == 'beard' %}
+                                                <img src="{% static 'images/haircuts/chiskop.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 200px; object-fit: contain; background-color: #374151;">
+                                            {% else %}
+                                                <img src="{% static 'images/haircuts/high flat top.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 200px; object-fit: contain; background-color: #374151;">
+                                            {% endif %}
                                         {% endif %}
                                         <div class="card-body">
                                             <h5 class="card-title">{{ service.name }}</h5>
@@ -433,21 +429,18 @@
                                 {% for service in trending_services %}
                                 <div class="col-md-6 col-lg-3 mb-4">
                                     <div class="card h-100 service-card">
-                                        {% comment %}
-                                            Map service to appropriate image based on service name
-                                        {% endcomment %}
-                                        {% if service.name|lower == "classic haircut" %}
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 150px; object-fit: contain; background-color: #374151;">
-                                        {% elif service.name|lower == "beard trim" %}
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 150px; object-fit: contain; background-color: #374151;">
-                                        {% elif service.name|lower == "haircut & beard" %}
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 150px; object-fit: contain; background-color: #374151;">
-                                        {% elif service.name|lower == "hot towel shave" %}
-                                            <img src="{% static 'images/haircuts/skinfade.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 150px; object-fit: contain; background-color: #374151;">
-                                        {% elif service.name|lower == "haircut & hot towel" %}
-                                            <img src="{% static 'images/haircuts/high flat top.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 150px; object-fit: contain; background-color: #374151;">
+                                        {% if service.image %}
+                                            <img src="{{ service.image.url }}" class="card-img-top" alt="{{ service.name }}" style="height: 150px; object-fit: contain; background-color: #374151;">
                                         {% else %}
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 150px; object-fit: contain; background-color: #374151;">
+                                            {% if service.category == 'haircut' %}
+                                                <img src="{% static 'images/haircuts/high flat top.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 150px; object-fit: contain; background-color: #374151;">
+                                            {% elif service.category == 'shave' %}
+                                                <img src="{% static 'images/haircuts/brush.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 150px; object-fit: contain; background-color: #374151;">
+                                            {% elif service.category == 'beard' %}
+                                                <img src="{% static 'images/haircuts/chiskop.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 150px; object-fit: contain; background-color: #374151;">
+                                            {% else %}
+                                                <img src="{% static 'images/haircuts/high flat top.webp' %}" class="card-img-top" alt="{{ service.name }}" style="height: 150px; object-fit: contain; background-color: #374151;">
+                                            {% endif %}
                                         {% endif %}
                                         <div class="card-body text-center">
                                             <h5 class="card-title">{{ service.name }}</h5>

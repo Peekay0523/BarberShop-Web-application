@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Add Barber - Clean|CUT Barber Shop{% endblock %}
+{% block title %}Edit Service - Clean|CUT Barber Shop{% endblock %}
 
 {% block content %}
 <style>
@@ -217,6 +217,27 @@
         color: #f3f4f6;
         box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.25);
     }
+    
+    .form-select {
+        background-color: #374151;
+        border: 1px solid #4b5563;
+        color: #f3f4f6;
+    }
+    
+    .form-select:focus {
+        background-color: #1f2937;
+        border-color: #fbbf24;
+        color: #f3f4f6;
+        box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.25);
+    }
+    
+    .current-image {
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 0.5rem;
+        border: 2px solid #4b5563;
+        object-fit: cover;
+    }
 </style>
 
 <div class="top-nav">
@@ -230,7 +251,7 @@
             <li><a href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
             <li><a href="{% url 'dashboard' %}">Client Management</a></li>
             <li><a href="{% url 'barber_list' %}">Barber Management</a></li>
-            <li><a href="{% url 'service_list' %}">Services</a></li>
+            <li><a href="{% url 'service_list' %}">Service Management</a></li>
         </ul>
         
         <div class="nav-user">
@@ -243,22 +264,31 @@
     <div class="row">
         <div class="col-12">
             <div class="profile-header">
-                <i class="bi bi-plus-circle profile-icon"></i>
+                <i class="bi bi-pencil-square profile-icon"></i>
                 <div class="profile-details">
-                    <h5>Add New Barber</h5>
-                    <p>Add a new member to your barber team</p>
+                    <h5>Edit Service Information</h5>
+                    <p>Update information for {{ service.name }}</p>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Add Barber Form Section -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <!-- Edit Service Form Section -->
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-8 col-lg-10">
                 <div class="card mb-4" style="width: calc(100% + 100px); margin: 0 auto;">
                     <div class="card-header">
-                        <h3><i class="bi bi-person-plus"></i> Add Barber Information</h3>
+                        <h3><i class="bi bi-scissors"></i> Update Service Information</h3>
                     </div>
                     <div class="section-content">
                         <form method="POST" enctype="multipart/form-data">
@@ -266,33 +296,58 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="name" class="form-label">Barber Name</label>
-                                        <input type="text" class="form-control" id="name" name="name" required>
+                                        <label for="name" class="form-label">Service Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{ service.name }}" required>
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="specialty" class="form-label">Specialty</label>
-                                        <input type="text" class="form-control" id="specialty" name="specialty">
+                                        <label for="price" class="form-label">Price (R)</label>
+                                        <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" value="{{ service.price }}" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="category" class="form-label">Category</label>
+                                        <select class="form-select" id="category" name="category" required>
+                                            <option value="haircut" {% if service.category == 'haircut' %}selected{% endif %}>Haircut</option>
+                                            <option value="shave" {% if service.category == 'shave' %}selected{% endif %}>Shave</option>
+                                            <option value="beard" {% if service.category == 'beard' %}selected{% endif %}>Beard Treatment</option>
+                                            <option value="color" {% if service.category == 'color' %}selected{% endif %}>Hair Color</option>
+                                            <option value="treatment" {% if service.category == 'treatment' %}selected{% endif %}>Hair Treatment</option>
+                                        </select>
                                     </div>
                                 </div>
                                 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="experience" class="form-label">Experience (years)</label>
-                                        <input type="number" class="form-control" id="experience" name="experience" min="0" required>
+                                        <label for="description" class="form-label">Description</label>
+                                        <textarea class="form-control" id="description" name="description" rows="3" required>{{ service.description }}</textarea>
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="photo" class="form-label">Photo</label>
-                                        <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
-                                        <div class="form-text">Upload a professional photo of the barber</div>
+                                        <label for="duration" class="form-label">Duration (minutes)</label>
+                                        <input type="number" class="form-control" id="duration" name="duration" min="1" value="{{ service.duration }}" required>
                                     </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">New Image</label>
+                                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                                        <div class="form-text">Upload new image (leave blank to keep current)</div>
+                                    </div>
+                                    
+                                    {% if service.image %}
+                                    <div class="mb-3">
+                                        <label class="form-label">Current Image</label>
+                                        <div>
+                                            <img src="{{ service.image.url }}" alt="{{ service.name }}" class="current-image">
+                                        </div>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                             
                             <div class="text-end">
-                                <a href="{% url 'barber_list' %}" class="btn btn-secondary me-2">Cancel</a>
-                                <button type="submit" class="btn btn-primary">Add Barber</button>
+                                <a href="{% url 'service_list' %}" class="btn btn-secondary me-2">Cancel</a>
+                                <button type="submit" class="btn btn-warning">Update Service</button>
                             </div>
                         </form>
                     </div>

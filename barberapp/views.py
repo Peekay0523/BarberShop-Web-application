@@ -263,7 +263,17 @@ def admin_login_page(request):
 @login_required
 def dashboard(request):
     clients = Client.objects.all().order_by('-created_date')
-    return render(request, 'dashboard.html', {'clients': clients})
+    registered_users_count = Customer.objects.count()  # Count registered users (customers)
+    return render(request, 'dashboard.html', {
+        'clients': clients,
+        'registered_users_count': registered_users_count
+    })
+
+@login_required
+def user_list(request):
+    # Get all users with their associated customer info
+    customers = Customer.objects.select_related('user').all()
+    return render(request, 'user_list.html', {'customers': customers})
 
 @login_required
 def updated_reviews(request):
@@ -434,13 +444,17 @@ def service_list(request):
     else:
         services = Service.objects.all()
     
+    # Calculate total value of all services
+    total_service_value = sum(float(service.price) for service in services)
+    
     # Get all categories for the filter dropdown
     categories = Service.CATEGORY_CHOICES
     
     return render(request, 'services.html', {
         'services': services,
         'categories': categories,
-        'selected_category': category
+        'selected_category': category,
+        'total_service_value': total_service_value
     })
 
 @login_required
@@ -451,13 +465,15 @@ def add_service(request):
         price = request.POST['price']
         duration = request.POST['duration']
         category = request.POST['category']
+        image = request.FILES.get('image')  # Get the uploaded image if provided
         
         service = Service(
             name=name,
             description=description,
             price=price,
             duration=duration,
-            category=category
+            category=category,
+            image=image  # Add the image field
         )
         service.save()
         
@@ -480,9 +496,51 @@ def delete_service(request):
     return JsonResponse({'success': False})
 
 @login_required
+def edit_service(request, service_id):
+    try:
+        service = Service.objects.get(id=service_id)
+    except Service.DoesNotExist:
+        messages.error(request, 'Service not found!')
+        return redirect('service_list')
+    
+    if request.method == 'POST':
+        name = request.POST['name']
+        description = request.POST['description']
+        price = request.POST['price']
+        duration = request.POST['duration']
+        category = request.POST['category']
+        image = request.FILES.get('image')  # Get the uploaded image if provided
+        
+        service.name = name
+        service.description = description
+        service.price = price
+        service.duration = duration
+        service.category = category
+        
+        # Only update image if a new one was uploaded
+        if image:
+            service.image = image
+            
+        service.save()
+        
+        messages.success(request, 'Service updated successfully!')
+        return redirect('service_list')
+    
+    # Get all categories for the form
+    categories = Service.CATEGORY_CHOICES
+    return render(request, 'edit_service.html', {
+        'service': service,
+        'categories': categories
+    })
+
+@login_required
 def barber_list(request):
     barbers = Barber.objects.all()
-    return render(request, 'barbers.html', {'barbers': barbers})
+    total_experience = sum(barber.experience for barber in barbers)
+    return render(request, 'barbers.html', {
+        'barbers': barbers,
+        'total_experience': total_experience
+    })
 
 @login_required
 def add_barber(request):
@@ -490,11 +548,13 @@ def add_barber(request):
         name = request.POST['name']
         specialty = request.POST['specialty']
         experience = request.POST['experience']
+        photo = request.FILES.get('photo')  # Get the uploaded photo if provided
         
         barber = Barber(
             name=name,
             specialty=specialty,
-            experience=experience
+            experience=experience,
+            photo=photo
         )
         barber.save()
         
@@ -515,6 +575,35 @@ def delete_barber(request):
             return JsonResponse({'success': False, 'message': 'Barber not found'})
     
     return JsonResponse({'success': False})
+
+@login_required
+def edit_barber(request, barber_id):
+    try:
+        barber = Barber.objects.get(id=barber_id)
+    except Barber.DoesNotExist:
+        messages.error(request, 'Barber not found!')
+        return redirect('barber_list')
+    
+    if request.method == 'POST':
+        name = request.POST['name']
+        specialty = request.POST['specialty']
+        experience = request.POST['experience']
+        photo = request.FILES.get('photo')  # Get the uploaded photo if provided
+        
+        barber.name = name
+        barber.specialty = specialty
+        barber.experience = experience
+        
+        # Only update photo if a new one was uploaded
+        if photo:
+            barber.photo = photo
+            
+        barber.save()
+        
+        messages.success(request, 'Barber updated successfully!')
+        return redirect('barber_list')
+    
+    return render(request, 'edit_barber.html', {'barber': barber})
 
 @login_required
 def delete_client(request):

@@ -81,6 +81,19 @@
             {% csrf_token %}
             <div class="service-info">
                 <h4 style="color: #fbbf24;">Selected Service</h4>
+                {% if service.image %}
+                    <img src="{{ service.image.url }}" class="img-fluid rounded" alt="{{ service.name }}" style="max-height: 150px; object-fit: cover; margin-bottom: 1rem;">
+                {% else %}
+                    {% if service.category == 'haircut' %}
+                        <img src="{% static 'images/haircuts/high flat top.webp' %}" class="img-fluid rounded" alt="{{ service.name }}" style="max-height: 150px; object-fit: cover; margin-bottom: 1rem;">
+                    {% elif service.category == 'shave' %}
+                        <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded" alt="{{ service.name }}" style="max-height: 150px; object-fit: cover; margin-bottom: 1rem;">
+                    {% elif service.category == 'beard' %}
+                        <img src="{% static 'images/haircuts/chiskop.webp' %}" class="img-fluid rounded" alt="{{ service.name }}" style="max-height: 150px; object-fit: cover; margin-bottom: 1rem;">
+                    {% else %}
+                        <img src="{% static 'images/haircuts/high flat top.webp' %}" class="img-fluid rounded" alt="{{ service.name }}" style="max-height: 150px; object-fit: cover; margin-bottom: 1rem;">
+                    {% endif %}
+                {% endif %}
                 <p><strong id="selected-service-name">{{ service.name|default:"Service Name" }}</strong></p>
                 <p><strong>Price:</strong> R<span id="selected-service-price">{{ service.price|default:"0.00" }}</span></p>
                 <p><strong>Duration:</strong> {{ service.duration|default:"0" }} minutes</p>

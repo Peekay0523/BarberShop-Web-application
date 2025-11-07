@@ -420,7 +420,19 @@
                             <div class="card mb-3">
                                 <div class="row g-0">
                                     <div class="col-md-4">
-                                        <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                        {% if service.image %}
+                                            <img src="{{ service.image.url }}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                        {% else %}
+                                            {% if service.category == 'haircut' %}
+                                                <img src="{% static 'images/haircuts/buzzcut.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                            {% elif service.category == 'shave' %}
+                                                <img src="{% static 'images/haircuts/beard.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                            {% elif service.category == 'beard' %}
+                                                <img src="{% static 'images/haircuts/Low fade.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                            {% else %}
+                                                <img src="{% static 'images/haircuts/beard.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                            {% endif %}
+                                        {% endif %}
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
@@ -447,7 +459,19 @@
                                 <div class="card mb-3">
                                     <div class="row g-0">
                                         <div class="col-md-4">
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                            {% if service.image %}
+                                                <img src="{{ service.image.url }}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                            {% else %}
+                                                {% if service.category == 'haircut' %}
+                                                    <img src="{% static 'images/haircuts/high flat top.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                                {% elif service.category == 'shave' %}
+                                                    <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                                {% elif service.category == 'beard' %}
+                                                    <img src="{% static 'images/haircuts/chiskop.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                                {% else %}
+                                                    <img src="{% static 'images/haircuts/high flat top.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                                {% endif %}
+                                            {% endif %}
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body">
@@ -471,7 +495,19 @@
                                 <div class="card mb-3">
                                     <div class="row g-0">
                                         <div class="col-md-4">
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                            {% if service.image %}
+                                                <img src="{{ service.image.url }}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                            {% else %}
+                                                {% if service.category == 'haircut' %}
+                                                    <img src="{% static 'images/haircuts/high flat top.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                                {% elif service.category == 'shave' %}
+                                                    <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                                {% elif service.category == 'beard' %}
+                                                    <img src="{% static 'images/haircuts/chiskop.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                                {% else %}
+                                                    <img src="{% static 'images/haircuts/high flat top.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                                {% endif %}
+                                            {% endif %}
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body">
@@ -495,7 +531,19 @@
                                 <div class="card mb-3">
                                     <div class="row g-0">
                                         <div class="col-md-4">
-                                            <img src="{% static 'images/haircuts/brush.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                            {% if service.image %}
+                                                <img src="{{ service.image.url }}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                            {% else %}
+                                                {% if service.category == 'haircut' %}
+                                                    <img src="{% static 'images/haircuts/high flat top.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                                {% elif service.category == 'shave' %}
+                                                    <img src="{% static 'images/haircuts/Low fade.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                                {% elif service.category == 'beard' %}
+                                                    <img src="{% static 'images/haircuts/beard.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                                {% else %}
+                                                    <img src="{% static 'images/haircuts/mid taper.webp' %}" class="img-fluid rounded-start" alt="{{ service.name }}" style="filter: brightness(0.7);">
+                                                {% endif %}
+                                            {% endif %}
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body">
